@@ -36,7 +36,7 @@ void Led::reset() {
 
 void Led::blinkOneSecond() {
   bool oneSecondPassed = millis() -
-                         lastLedBlink >= oneSecond;
+                         lastLedBlink >= ONE_SECOND;
   if (oneSecondPassed) {
     inverse();
     lastLedBlink = millis();

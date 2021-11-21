@@ -6,7 +6,7 @@ class Led {
     byte pin;
     bool state = true;
     unsigned long lastLedBlink = 0;
-    const int oneSecond = 1000;
+    const int ONE_SECOND = 1000;
 
   public:
     Led(byte pin);

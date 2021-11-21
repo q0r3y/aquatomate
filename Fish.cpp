@@ -37,6 +37,22 @@ bool Fish::getFedStatus() {
   return hasBeenFed;
 }
 
+byte Fish::getFeedTimeHour() {
+  return feedTimeHour;
+}
+
+byte Fish::getFeedTimeMinute() {
+  return feedTimeMinute;
+}
+
+void Fish::setFeedTimeHour(byte hour) {
+  this -> feedTimeHour = hour;
+}
+
+void Fish::setFeedTimeMinute(byte minute) {
+  this -> feedTimeMinute = minute;
+}
+
 void Fish::setAmFeedHour(byte hour) {
   this -> amFeedHour = hour;
 }

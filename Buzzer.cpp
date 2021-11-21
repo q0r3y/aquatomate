@@ -31,16 +31,16 @@ void Buzzer::thirtyMinuteCountDown() {
     buzzerCountDownReset = true;
   }
   bool thirtyMinutesPassed = millis() -
-                             buzzerCountDown >= thirtyMinutes;
+                             buzzerCountDown >= THIRTY_MINUTES;
 
   if (thirtyMinutesPassed) { activateTenSeconds(); }
 }
 
 void Buzzer::activateTenSeconds() {
   bool tenSecondPassed = millis() -
-                         lastBuzzer >= tenSecond;
+                         lastBuzzer >= TEN_SECOND;
   bool oneSecondPassed = millis() -
-                         buzzerDuration >= oneSecond;
+                         buzzerDuration >= ONE_SECOND;
   if (oneSecondPassed) {
     off();
     buzzerDuration = millis();

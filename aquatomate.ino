@@ -3,14 +3,12 @@
 #include <NTPClient.h>
 #include <WiFiUdp.h>
 #include <OneWire.h>
-//#include <Wire.h>
 #include "LightSensor.h"
 #include "Relay.h"
 #include "Buzzer.h"
 #include "Led.h"
 #include "Fish.h"
 #include "config.h"
-
 
 #define VERSION 20211121
 
@@ -25,21 +23,21 @@ Fish fish;
 Relay relay(RELAY_PIN);
 Led onboardLed(LED_PIN);
 Buzzer buzzer(BUZZER_PIN, BUZZER_FREQ);
-//LightSensor lightSensor(PHOTORESISTOR_PIN);
 WiFiUDP ntpUDP;
 bool stateHasBeenResetThisHour = false;
 NTPClient timeClient(ntpUDP, "pool.ntp.org");
 OneWire oneWire(TEMPERATURE_PIN);
 //DallasTemperature temperatureSensor(&oneWire);
+
 void ICACHE_RAM_ATTR feedButtonPressed();
 
 void setup() {
   delay(3000);
   Serial.begin(115200);
-  Serial.print("Aquatomate v");
+  Serial.print(F("Aquatomate v"));
   Serial.println(VERSION);
   setFeedButtonInterrupt();
-//  temperatureSensor.begin();
+  initDisplay();
   setWifi();
   setTimeClient();
 }
@@ -65,10 +63,12 @@ void setTimeClient() {
 }
 
 void feedButtonPressed() {
-  fish.setFedStatus(true);
   buzzer.reset();
-  buzzer.off();
+  fish.setFedStatus(true);
+  fish.setFeedTimeMinute(timeClient.getMinutes());
+  fish.setFeedTimeHour(timeClient.getHours() - DAY_LIGHT_SAVINGS);
   onboardLed.setState(relay.getState());
+  buzzer.off();
 }
 
 // void printTemperature() {
@@ -105,13 +105,13 @@ void setAquariumPmState() {
 void loop() {
   byte currentMinute = timeClient.getMinutes();
   byte currentHour = timeClient.getHours() - DAY_LIGHT_SAVINGS;
+  bool oneMinuteHasPassed = millis() - displayUpdateTimer >= ONE_MINUTE;
   bool isTimeToResetState = currentHour == SIX_AM ||
                             currentHour == NOON ||
                             currentHour == SIX_PM ||
                             currentHour == MIDNIGHT;
 
   if (fish.areHungry(currentHour, currentMinute)) {
-    Serial.println("Fish are Hungry");
     onboardLed.blinkOneSecond();
     buzzer.thirtyMinuteCountDown();
   }
@@ -120,7 +120,7 @@ void loop() {
     //Serial.println("Relay should be on");
     if (relay.getState() == false) {
       setAquariumAmState();
-      Serial.println("Relay & LED On");
+      Serial.println(F("Relay & LED On"));
       Serial.println(currentHour);
     }
     // else if (lightSensor.detectsNoLight() && lightSensor.getAttempts() < 3) {
@@ -140,5 +140,11 @@ void loop() {
     }
   } else {
     stateHasBeenResetThisHour = false;
+  }
+
+  if (oneMinuteHasPassed) {
+    Serial.println(F("Updating Display"));
+    updateDisplay(currentHour, currentMinute);
+    displayUpdateTimer = millis();
   }
 }

@@ -29,12 +29,14 @@ void updateDisplay(byte currentHour, byte currentMinute) {
   display.print(VERSION);
   display.setCursor(0, Y_CHARACTER_OFFSET*1);
   display.print(F("Current Time: "));
+  if (currentHour < 10) { display.print(F("0")); }
   display.print(currentHour);
   display.print(F(":"));
   if (currentMinute < 10) { display.print(F("0")); }
   display.print(currentMinute);
   display.setCursor(0, Y_CHARACTER_OFFSET*6);
   display.print(F("Fed: "));
+  if (fish.getFeedTimeHour() < 10) { display.print(F("0")); }
   display.print(fish.getFeedTimeHour());
   display.print(F(":"));
   if (fish.getFeedTimeMinute() < 10) { display.print(F("0")); }

@@ -105,7 +105,7 @@ void setAquariumPmState() {
 void loop() {
   byte currentMinute = timeClient.getMinutes();
   byte currentHour = timeClient.getHours() - DAY_LIGHT_SAVINGS;
-  bool oneMinuteHasPassed = millis() - displayUpdateTimer >= ONE_MINUTE;
+  bool thirtySecondsPassed = millis() - displayUpdateTimer >= THIRTY_SECONDS;
   bool isTimeToResetState = currentHour == SIX_AM ||
                             currentHour == NOON ||
                             currentHour == SIX_PM ||
@@ -142,7 +142,7 @@ void loop() {
     stateHasBeenResetThisHour = false;
   }
 
-  if (oneMinuteHasPassed) {
+  if (thirtySecondsPassed) {
     Serial.println(F("Updating Display"));
     updateDisplay(currentHour, currentMinute);
     displayUpdateTimer = millis();

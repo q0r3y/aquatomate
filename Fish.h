@@ -7,7 +7,7 @@ class Fish {
     const byte MIDNIGHT = 23;
     bool hasBeenFed = false;
     byte amFeedHour = 7;
-    byte amFeedMinute = 40;
+    byte amFeedMinute = 41;
     byte pmFeedHour = 19;
 
   public:

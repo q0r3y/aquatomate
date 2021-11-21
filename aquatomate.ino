@@ -12,7 +12,7 @@
 #include "config.h"
 
 
-#define VERSION 20211115
+#define VERSION 20211121
 
 // Todo add light detection relay control
 // Todo add button to turn on/off everything regardless of time/state
@@ -27,7 +27,7 @@ Led onboardLed(LED_PIN);
 Buzzer buzzer(BUZZER_PIN, BUZZER_FREQ);
 //LightSensor lightSensor(PHOTORESISTOR_PIN);
 WiFiUDP ntpUDP;
-bool stateHasBeenResetThisHour = true;
+bool stateHasBeenResetThisHour = false;
 NTPClient timeClient(ntpUDP, "pool.ntp.org");
 OneWire oneWire(TEMPERATURE_PIN);
 //DallasTemperature temperatureSensor(&oneWire);
@@ -93,13 +93,13 @@ void resetState() {
 void setAquariumAmState() {
   relay.on();
   onboardLed.on();
-  buzzer.beepDuration(2000);
+  buzzer.beepDuration(500);
 }
 
 void setAquariumPmState() {
   relay.off();
   onboardLed.off();
-  buzzer.beepDuration(2000);
+  buzzer.beepDuration(500);
 }
 
 void loop() {
@@ -109,9 +109,6 @@ void loop() {
                             currentHour == NOON ||
                             currentHour == SIX_PM ||
                             currentHour == MIDNIGHT;
-
-  //Serial.print(currentHour);
-  //Serial.println(currentMinute);
 
   if (fish.areHungry(currentHour, currentMinute)) {
     Serial.println("Fish are Hungry");
@@ -134,8 +131,6 @@ void loop() {
   } else {
     if (relay.getState() == true) {
       setAquariumPmState();
-      Serial.println("Relay & LED Off");
-      Serial.println(currentHour);
     }
   }
 

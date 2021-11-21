@@ -4,9 +4,10 @@ Fish::Fish() {
 }
 
 bool Fish::areHungry(byte currentHour, byte currentMinute) {
-  bool fishNeedFoodAm = (currentHour >= amFeedHour &&
-                        currentMinute >= amFeedMinute &&
-                        currentHour < NOON) &&
+  bool fishNeedFoodAm = ((currentHour == amFeedHour &&
+                        currentMinute >= amFeedMinute) ||
+                        (currentHour > amFeedHour &&
+                        currentHour < NOON)) &&
                         !hasBeenFed;
 
   bool fishNeedFoodPm = (currentHour >= pmFeedHour &&

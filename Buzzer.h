@@ -18,7 +18,8 @@ class Buzzer {
     void on();
     void off();
     void reset();
-    void thirtyMinuteCountDown();
     void activateTenSeconds();
+    void thirtyMinuteCountDown();
+    void beepDuration(unsigned long duration);
 };
 #endif

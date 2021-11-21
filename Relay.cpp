@@ -1,18 +1,18 @@
 #include "Relay.h"
 
 Relay::Relay(byte pin) {
-  this->pin = pin;
+  this -> pin = pin;
   pinMode(pin, OUTPUT);
   on();
 }
 
 void Relay::on() {
-  this->state = true;
+  this -> state = true;
   digitalWrite(pin, HIGH);
 }
 
 void Relay::off() {
-  this->state = false;
+  this -> state = false;
   digitalWrite(pin, LOW);
 }
 
@@ -41,13 +41,13 @@ byte Relay::getPmLightOffHr() {
 }
 
 void Relay::setAmLightOnHr(byte hour) {
-  this->amLightOnHour = hour;
+  this -> amLightOnHour = hour;
 }
 
 void Relay::setAmLightOnMin(byte minute) {
-  this->amLightOnMinute = minute;
+  this -> amLightOnMinute = minute;
 }
 
 void Relay::setPmLightOffHr(byte hour) {
-  this->pmLightOffHour = hour;
+  this -> pmLightOffHour = hour;
 }

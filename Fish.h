@@ -6,18 +6,21 @@ class Fish {
     const byte NOON = 12;
     const byte MIDNIGHT = 23;
     bool hasBeenFed = false;
-    byte amFeedTime = 7;
-    byte pmFeedTime = 19;
+    byte amFeedHour = 7;
+    byte amFeedMinute = 40;
+    byte pmFeedHour = 19;
 
   public:
     Fish();
     void reset();
+    byte getAmFeedHour();
+    byte getAmFeedMinute();
+    byte getPmFeedHour();
     bool getFedStatus();
     void setFedStatus(bool status);
-    byte getAmFeedTime();
-    byte getPmFeedTime();
-    void setAmFeedTime(byte time);
-    void setPmFeedTime(byte time);
-    bool areHungry(byte currentHour);
+    void setAmFeedHour(byte hour);
+    void setPmFeedHour(byte hour);
+    void setAmFeedMinute(byte minute);
+    bool areHungry(byte currentHour, byte currentMinute);
 };
 #endif

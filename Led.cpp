@@ -1,23 +1,23 @@
 #include "Led.h"
 
 Led::Led(byte pin) {
-  this->pin = pin;
+  this -> pin = pin;
   pinMode(pin, OUTPUT);
   on();
 }
 
 void Led::on() {
-  this->state = true;
+  this -> state = true;
   digitalWrite(pin, LOW);
 }
 
 void Led::off() {
-  this->state = false;
+  this -> state = false;
   digitalWrite(pin, HIGH);
 }
 
 void Led::inverse() {
-  this->state = !state;
+  this -> state = !state;
   digitalWrite(pin, !state);
 }
 
@@ -26,7 +26,7 @@ bool Led::getState() {
 }
 
 void Led::setState(bool state) {
-  this->state = state;
+  this -> state = state;
   digitalWrite(pin, !state);
 }
 
@@ -48,5 +48,5 @@ unsigned long Led::getLastLedBlink() {
 }
 
 void Led::setLastLedBlink(unsigned long duration) {
-  this->lastLedBlink = duration;
+  this -> lastLedBlink = duration;
 }

@@ -3,12 +3,13 @@
 Fish::Fish() {
 }
 
-bool Fish::areHungry(byte currentHour) {
-  bool fishNeedFoodAm = (currentHour >= amFeedTime &&
+bool Fish::areHungry(byte currentHour, byte currentMinute) {
+  bool fishNeedFoodAm = (currentHour >= amFeedHour &&
+                        currentMinute >= amFeedMinute &&
                         currentHour < NOON) &&
                         !hasBeenFed;
 
-  bool fishNeedFoodPm = (currentHour >= pmFeedTime &&
+  bool fishNeedFoodPm = (currentHour >= pmFeedHour &&
                         currentHour < MIDNIGHT) &&
                         !hasBeenFed;
 
@@ -19,24 +20,32 @@ void Fish::reset() {
   this -> hasBeenFed = false;
 }
 
-byte Fish::getAmFeedTime() {
-  return amFeedTime;
+byte Fish::getAmFeedHour() {
+  return amFeedHour;
 }
 
-byte Fish::getPmFeedTime() {
-  return pmFeedTime;
+byte Fish::getAmFeedMinute() {
+  return amFeedMinute;
+}
+
+byte Fish::getPmFeedHour() {
+  return pmFeedHour;
 }
 
 bool Fish::getFedStatus() {
   return hasBeenFed;
 }
 
-void Fish::setAmFeedTime(byte time) {
-  this -> amFeedTime = time;
+void Fish::setAmFeedHour(byte hour) {
+  this -> amFeedHour = hour;
 }
 
-void Fish::setPmFeedTime(byte time) {
-  this -> pmFeedTime = time;
+void Fish::setPmFeedHour(byte hour) {
+  this -> pmFeedHour = hour;
+}
+
+void Fish::setAmFeedMinute(byte minute) {
+  this -> amFeedMinute = minute;
 }
 
 void Fish::setFedStatus(bool status) {

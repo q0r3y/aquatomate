@@ -1,8 +1,8 @@
 #include "Buzzer.h"
 
 Buzzer::Buzzer(byte pin, int frequency) {
-  this->pin = pin;
-  this->frequency = frequency;
+  this -> pin = pin;
+  this -> frequency = frequency;
   pinMode(pin, OUTPUT);
 }
 
@@ -19,6 +19,10 @@ void Buzzer::reset() {
   buzzerCountDown = 0;
   buzzerDuration = 0;
   lastBuzzer = 0;
+}
+
+void Buzzer::beepDuration(unsigned long duration) {
+  tone(pin, frequency, duration);
 }
 
 void Buzzer::thirtyMinuteCountDown() {

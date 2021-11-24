@@ -6,11 +6,12 @@
 #include "LightSensor.h"
 #include "Relay.h"
 #include "Buzzer.h"
+#include "Button.h"
 #include "Led.h"
 #include "Fish.h"
-#include "config.h"
+#include "public_config.h"
 
-#define VERSION 20211121
+#define VERSION 20211124
 
 // Todo add light detection relay control
 // Todo add button to turn on/off everything regardless of time/state
@@ -22,6 +23,7 @@
 Fish fish;
 Relay relay(RELAY_PIN);
 Led onboardLed(LED_PIN);
+Button feedButton(INTERRUPT_PIN);
 Buzzer buzzer(BUZZER_PIN, BUZZER_FREQ);
 WiFiUDP ntpUDP;
 bool stateHasBeenResetThisHour = false;
@@ -29,23 +31,14 @@ NTPClient timeClient(ntpUDP, "pool.ntp.org");
 OneWire oneWire(TEMPERATURE_PIN);
 //DallasTemperature temperatureSensor(&oneWire);
 
-void ICACHE_RAM_ATTR feedButtonPressed();
-
 void setup() {
   delay(3000);
   Serial.begin(115200);
   Serial.print(F("Aquatomate v"));
   Serial.println(VERSION);
-  setFeedButtonInterrupt();
   initDisplay();
   setWifi();
   setTimeClient();
-}
-
-void setFeedButtonInterrupt() {
-  pinMode(INTERRUPT_PIN, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(INTERRUPT_PIN),
-                           feedButtonPressed, FALLING);
 }
 
 void setWifi() {
@@ -62,7 +55,7 @@ void setTimeClient() {
   timeClient.update();
 }
 
-void feedButtonPressed() {
+void setFeedState() {
   buzzer.reset();
   fish.setFedStatus(true);
   fish.setFeedTimeMinute(timeClient.getMinutes());
@@ -110,6 +103,10 @@ void loop() {
                             currentHour == NOON ||
                             currentHour == SIX_PM ||
                             currentHour == MIDNIGHT;
+
+  if (feedButton.isPressed()) {
+    setFeedState();
+  }
 
   if (fish.areHungry(currentHour, currentMinute)) {
     onboardLed.blinkOneSecond();
